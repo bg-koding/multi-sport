@@ -67,7 +67,7 @@
                                         href="{{ url('shop', $produk->id) }}">{{ $produk->nama_produk }}</a></h3>
                                 <span class="price d-block">Rp.
                                     {{ number_format($produk->harga_produk, 2, ',', '.') }}</span>
-                                @if (!Auth::check())
+                                {{-- @if (!Auth::check())
                                     <a href="{{ url('login') }}"
                                         class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary"
                                         onclick="return alert('login dahulu')">Add To Cart</a>
@@ -79,7 +79,7 @@
                                         <button class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To
                                             Cart</button>
                                     </form>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </div>
