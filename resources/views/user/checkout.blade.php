@@ -94,7 +94,7 @@
                                 <label for="" class="text-black">Metode Pembayaran</label>
                                 <select name="metode_pembayaran" id="" class="form-control">
                                     <option value="cod">Cod</option>
-                                    <option value="transfer">Transer</option>
+                                    <option value="transfer">Transfer</option>
                                 </select>
                             </div>
 
@@ -112,8 +112,17 @@
                                     <input name="produk_id[]" type="hidden" value="{{ $p->id }}">
                                 @endforeach
                             @endforeach
+                            @foreach ($testi as $item)
+                                <input type="hidden" name="size_bola[]" value="{{ $item->size_bola }}">
+                                <input type="hidden" name="warna_bola[]" value="{{ $item->warna_bola }}">
+                                <input type="hidden" name="tipe_bola[]" value="{{ $item->tipe_bola }}">
+                                <input type="hidden" name="size_sepatu[]" value="{{ $item->size_sepatu }}">
+                                <input type="hidden" name="warna_sepatu[]" value="{{ $item->warna_sepatu }}">
+                                <input type="hidden" name="size_baj[]u" value="{{ $item->size_baju }}">
+                                <input type="hidden" name="warna_baju[]" value="{{ $item->warna_baju }}">
+                                <input type="hidden" name="total[]" value="{{ $item->total }}">
+                            @endforeach
 
-                            <input type="hidden" name="total harga" value="{{ $total->total }}">
 
                             <div class="form-group">
                                 <button class="btn btn-primary btn-lg btn-block">Place
@@ -128,6 +137,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Barang</th>
+                                <th>Qty</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -135,13 +145,14 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $pesanan->produk[0]->nama_produk }}</td>
+                                    <td>{{ $pesanan->total }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td class="text-black" colspan="2">
-                                    Total : Rp. {{ number_format($total->total, 2, ',') }}
+                                <td class="text-black" colspan="3">
+                                    Total : Rp. {{ number_format($total, 2, ',') }}
                                 </td>
                             </tr>
                         </tfoot>

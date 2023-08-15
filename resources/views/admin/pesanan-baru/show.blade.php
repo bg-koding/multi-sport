@@ -2,7 +2,7 @@
 
 @section('konten')
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-6">
             <div class="card mt-5">
                 <div class="card-header">
                     Pesanan Baru
@@ -44,7 +44,11 @@
                             </tr>
                             <tr>
                                 <td>total harga</td>
-                                <td>Rp. {{ number_format($pesanan->total, 2, ',', '.') }}</td>
+                                <td>Rp. {{ number_format($pesanan->total_harga, 2, ',', '.') }}</td>
+                            </tr>
+                            <tr>
+                                <td>metode pembayaran</td>
+                                <td>{{ $pesanan->metode_pembayaran }}</td>
                             </tr>
 
                             @if ($pesanan->invoce)
@@ -54,6 +58,11 @@
                                                 class="fa fa-download"></i>
                                             download</a></td>
                                 </tr>
+                            @else
+                                <tr>
+                                    <td>invoce</td>
+                                    <td>blm ada pembayaran</td>
+                                </tr>
                             @endif
 
                         </tbody>
@@ -61,24 +70,58 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header">
+                    Produk Baru
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                {{-- <th>Foto</th> --}}
+                                <th>Nama</th>
+                                <th>Qty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($list_pesan as $product)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    {{-- <td>
+                                        <img width="100px"
+                                            src="{{ url('gambar', json_decode($product[0]->gambar_produk)[0]) }}"
+                                            class="img-fluid" alt="" srcset="">
+                                    </td> --}}
+                                    <td>{{ $product->produk->nama_produk }}</td>
+                                    <td>{{ $product->total }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>no</th>
-                        <th>Produk</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($list_produk as $produk)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $produk }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="card mt-3">
+                <div class="card-header">
+                    Ubah Status
+                </div>
+                <div class="card-body">
+                    <form action="{{ url('admin/update-status', $pesanan->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <select name="status" id="" class="form-control">
+                            <option value="di kirim">Di kirim</option>
+                            <option value="di tolak">Di tolak</option>
+                        </select>
+
+                        <div class="d-grid">
+                            <button class="btn mt-2 btn-dark">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

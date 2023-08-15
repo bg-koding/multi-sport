@@ -8,18 +8,17 @@
                 <div class="p-3 p-lg-5 border">
                     <table class="table site-block-order-table mb-5">
                         <thead>
-                            {{-- <th>Product</th> --}}
-                            {{-- <th>Harga</th> --}}
-                            {{-- <th>Ongkir</th> --}}
-                            {{-- <th>Total</th> --}}
+
                             <th>Nama Produk</th>
                             <th>Harga</th>
+                            <th>Qty</th>
                         </thead>
                         <tbody>
-                            @foreach ($products as $product)
+                            @foreach ($list_pesanan as $product)
                                 <tr>
-                                    <td>{{ $product[0]['nama_produk'] }} </td>
-                                    <td>Rp. {{ number_format($product[0]['harga_produk'], 2, ',') }}</td>
+                                    <td>{{ $product->produk->nama_produk }}</td>
+                                    <td>Rp. {{ number_format($product->produk->harga_produk, 2, ',', '.') }}</td>
+                                    <td>{{ $product->total }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -28,8 +27,8 @@
                                 <td>
                                     Total :
                                 </td>
-                                <td >
-                                    Rp. {{ number_format($pesanan[0]->total_harga, 2, ',') }}
+                                <td>
+                                    Rp. {{ number_format($total, 2, ',') }}
                                 </td>
                             </tr>
                         </tfoot>
@@ -37,8 +36,8 @@
 
                     <div class="border mb-3 p-3 rounded">
                         <label for="">Kode pembayaran</label>
-                        {{-- <h2>{{ $code }}</h2> --}}
-                        {{-- <small>Total yang di bayarkan : Rp. {{ number_format($total, 2, ',', '.') }}</small> --}}
+                        <h2>{{ $code }}</h2>
+                        <small>Total yang di bayarkan : Rp. {{ number_format($total, 2, ',') }}</small>
                     </div>
 
                     <div class="border mb-3 p-3 rounded">

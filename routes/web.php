@@ -39,6 +39,7 @@ Route::middleware('auth')->prefix('admin')->group(function (){
     Route::controller(PesananBaruController::class)->group(function () {
         Route::get('/pesanan-baru', 'index');
         Route::get('/pesanan-baru/{pesanan}', 'show');
+        Route::put('/update-status/{pesanan}', 'update');
     });
 });
 
@@ -52,12 +53,14 @@ Route::controller(HomeController::class)->group(function () {
 // Pelanggan Shop controller
 Route::controller(ShopController::class)->group(function () {
     Route::get('/cart', 'cart');
+    Route::get('/cart-test', 'cart2');
     Route::post('/add-cart', 'addCart');
     Route::post('/cart/test', 'cartTest');
     Route::get('/checkout', 'index_checkOut');
     Route::post('/checkout', 'store_checkOut');
     Route::get('/invoce', 'index_invoce');
     Route::get('/thanks', 'index_thanks');
+    Route::delete('/cart/delete/{cart}', 'cart_delete');
 });
 
 

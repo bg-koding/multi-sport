@@ -33,6 +33,8 @@
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                                 <input type="hidden" name="produk_id" value="{{ $produk->id }}">
+                                <input type="hidden" name="category" value="{{ $produk->kategori_produk }}">
+
                                 @if (!empty($size_bola))
                                     <div class="d-flex">
                                         Size Bola :
@@ -41,6 +43,22 @@
                                                 <input class="form-check-input" type="radio" name="size_bola"
                                                     id="size-bola-{{ $index }}" value="{{ $bola }}">
                                                 <label class="form-check-label" for="size-bola-{{ $index }}">
+                                                    {{ $bola }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                        @error('size_bola')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+
+                                    <div class="d-flex">
+                                        Tipe Bola :
+                                        @foreach ($tipe_bola as $index => $bola)
+                                            <div class="form-check mx-2">
+                                                <input class="form-check-input" type="radio" name="tipe_bola"
+                                                    id="tipe-bola-{{ $index }}" value="{{ $bola }}">
+                                                <label class="form-check-label" for="tipe-bola-{{ $index }}">
                                                     {{ $bola }}
                                                 </label>
                                             </div>
@@ -58,19 +76,9 @@
                                                 </label>
                                             </div>
                                         @endforeach
-                                    </div>
-
-                                    <div class="d-flex">
-                                        Tipe Bola :
-                                        @foreach ($tipe_bola as $index => $bola)
-                                            <div class="form-check mx-2">
-                                                <input class="form-check-input" type="radio" name="tipe_bola"
-                                                    id="tipe-bola-{{ $index }}" value="{{ $bola }}">
-                                                <label class="form-check-label" for="tipe-bola-{{ $index }}">
-                                                    {{ $bola }}
-                                                </label>
-                                            </div>
-                                        @endforeach
+                                        @error('warna_bola')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -86,6 +94,9 @@
                                                 </label>
                                             </div>
                                         @endforeach
+                                        @error('size_sepatu')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
 
                                     <div class="d-flex">
@@ -99,6 +110,9 @@
                                                 </label>
                                             </div>
                                         @endforeach
+                                        @error('warna_sepatu')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -114,6 +128,9 @@
                                                 </label>
                                             </div>
                                         @endforeach
+                                        @error('size_baju')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
 
                                     <div class="d-flex">
@@ -127,6 +144,9 @@
                                                 </label>
                                             </div>
                                         @endforeach
+                                        @error('warna_baju')
+                                            {{ $message }}
+                                        @enderror
                                     </div>
                                 @endif
 

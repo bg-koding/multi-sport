@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CheckOut;
+use App\Models\DetailPesanan;
 use App\Models\Pesanan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -21,16 +22,87 @@ class ShopController extends Controller
 
         $data['list_cart'] = Cart::where('user_id', $silogin)->with('user')->with('produk')->get();
 
+        $cart = Cart::where('user_id', $silogin)->with('user')->with('produk')->get();
+
+        $test = []; // Simpan harga produk di sini
+        $q = [];    // Simpan total produk di sini
+
+        foreach ($cart as $c) {
+            $test[] = $c->produk[0]->harga_produk;
+            $q[] = $c->total;
+        }
+
+        $result = 0; // Inisialisasi hasil perhitungan
+
+        // Lakukan perhitungan perkalian dan penjumlahan
+        for ($i = 0; $i < count($test); $i++) {
+            $result += $test[$i] * $q[$i];
+        }
+
+        $data['total'] = $result;
+        $data['jumlah'] = array_sum($q);
+
+        $data['testi'] = Cart::where('user_id', $silogin)->get();
+
+
         return view('user.cart', $data);
+    }
+
+    public function cart2()
+    {
+
+        $silogin = Auth::user()->id;
+
+        $data['list_cart'] = Cart::where('user_id', $silogin)->with('user')->with('produk')->get();
+
+        return view('user.cart-test', $data);
     }
 
     public function addCart(Request $request)
     {
-        // dd($request->all());
+        if ($request->category == 'bola') {
+            $request->validate([
+                'size_bola' => 'required',
+                'warna_bola' => 'required',
+            ]);
+        }
+
+        if ($request->category == 'sepatu') {
+            $request->validate([
+                'size_sepatu' => 'required',
+                'warna_sepatu' => 'required',
+            ]);
+        }
+
+        if ($request->category == 'baju') {
+            $request->validate([
+                'size_baju' => 'required',
+                'warna_baju' => 'required',
+            ]);
+        }
+
         $cart = new Cart();
-        $cart->user_id = request('user_id');
-        $cart->produk_id = request('produk_id');
+        $cart->user_id = $request->user_id;
+        $cart->produk_id = $request->produk_id;
+
+        if ($request->category == 'bola') {
+            $cart->size_bola = $request->size_bola;
+            $cart->warna_bola = $request->warna_bola;
+            $cart->tipe_bola = $request->tipe_bola;
+        }
+
+        if ($request->category == 'sepatu') {
+            $cart->size_sepatu = $request->size_sepatu;
+            $cart->warna_sepatu = $request->warna_sepatu;
+        }
+
+        if ($request->category == 'baju') {
+            $cart->size_baju = $request->size_baju;
+            $cart->warna_baju = $request->warna_baju;
+        }
+
         $cart->status = 'checkout';
+        $cart->total = $request->total;
         $cart->save();
 
         return back();
@@ -39,31 +111,54 @@ class ShopController extends Controller
 
     public function index_invoce()
     {
-        $data['pesanan'] = auth()->user()->pesanan;
+        $isLogin = auth()->user()->id;
+        $data['list_pesanan'] = DetailPesanan::where('user_id', $isLogin)->get();
 
-        $id =  json_decode(auth()->user()->pesanan[0]->produk_id);
-        // return Produk::where('id', $id)->get();
+        $cart = DetailPesanan::where('user_id', $isLogin)->get();
 
-        foreach ($id as $id) {
-            $products[] = Produk::where('id', $id)->get();
+        $test = []; // Simpan harga produk di sini
+        $q = [];    // Simpan total produk di sini
+
+        foreach ($cart as $c) {
+            $test[] = $c->produk->harga_produk;
+            $q[] = $c->total;
         }
-        $data['products'] = $products;
-        // return $products;
+
+        $result = 0; // Inisialisasi hasil perhitungan
+
+        // Lakukan perhitungan perkalian dan penjumlahan
+        for ($i = 0; $i < count($test); $i++) {
+            $result += $test[$i] * $q[$i];
+        }
+
+        $data['total'] = $result;
+        $data['code'] = date('y') . Str::random(20);
+
         return view('user.invioce', $data);
     }
 
     public function cartTest(Request $request)
     {
+
+
         $silogin = Auth::user()->id;
 
-        foreach ($request->produk_id as $produk) {
+        foreach ($request->produk_id as $index => $produk) {
             $CheckOut = new CheckOut();
             $CheckOut->user_id = $silogin;
             $CheckOut->produk_id = $produk;
-            $CheckOut->total = $request->total;
+            $CheckOut->total = $request->total[$index] ?? null;
+            $CheckOut->size_bola = $request->size_bola[$index] ?? null;
+            $CheckOut->warna_bola = $request->warna_bola[$index] ?? null;
+            $CheckOut->tipe_bola = $request->tipe_bola[$index] ?? null;
+            $CheckOut->size_sepatu = $request->size_sepatu[$index] ?? null;
+            $CheckOut->warna_sepatu = $request->warna_sepatu[$index] ?? null;
+            $CheckOut->size_baju = $request->size_baju[$index] ?? null;
+            $CheckOut->warna_baju = $request->warna_baju[$index] ?? null;
             $CheckOut->status = "Baru";
             $simpanData = $CheckOut->save();
         }
+
 
         if ($simpanData == 1) {
             foreach ($request->produk_id as $x) {
@@ -84,14 +179,33 @@ class ShopController extends Controller
     {
         $silogin = auth()->user()->id;
         $data['list_pesanan'] = CheckOut::where('user_id', $silogin)->with('produk')->get();
-        $data['total'] = CheckOut::where('user_id', $silogin)->get('total')->first();
+        $cart = CheckOut::where('user_id', $silogin)->get();
+
+        $test = []; // Simpan harga produk di sini
+        $q = [];    // Simpan total produk di sini
+
+        foreach ($cart as $c) {
+            $test[] = $c->produk[0]->harga_produk;
+            $q[] = $c->total;
+        }
+
+        $result = 0; // Inisialisasi hasil perhitungan
+
+        // Lakukan perhitungan perkalian dan penjumlahan
+        for ($i = 0; $i < count($test); $i++) {
+            $result += $test[$i] * $q[$i];
+        }
+
+        $data['total'] = $result;
+        $data['testi'] = CheckOut::where('user_id', $silogin)->get();
+
         return view('user.checkout', $data);
     }
 
 
     public function store_checkOut(Request $request)
     {
-        // return $request->all();
+
         $pesanan = new Pesanan();
         $pesanan->first_name = $request->first_name;
         $pesanan->user_id = auth()->user()->id;
@@ -103,15 +217,33 @@ class ShopController extends Controller
         $pesanan->phone = $request->phone;
         $pesanan->metode_pembayaran = $request->metode_pembayaran;
         $pesanan->order_notes = $request->order_notes;
-        $produk = [];
-        foreach ($request->produk_id as $p) {
-            $produk[] = $p;
-            CheckOut::where('produk_id', $p)->delete();
-        }
-        $pesanan->produk_id = json_encode($produk);
-        $pesanan->total_harga = $request->total_harga;
+        $pesanan->kode_produk = auth()->user()->id;
+        $pesanan->status = 'pesanan baru';
         $pesanan->save();
 
+        $silogin = Auth::user()->id;
+
+        foreach ($request->produk_id as $index => $produk) {
+            $detailPesanan = new DetailPesanan();
+            $detailPesanan->user_id = $silogin;
+            $detailPesanan->produk_id = $produk;
+            $detailPesanan->total = $request->total[$index] ?? null;
+            $detailPesanan->size_bola = $request->size_bola[$index] ?? null;
+            $detailPesanan->warna_bola = $request->warna_bola[$index] ?? null;
+            $detailPesanan->tipe_bola = $request->tipe_bola[$index] ?? null;
+            $detailPesanan->size_sepatu = $request->size_sepatu[$index] ?? null;
+            $detailPesanan->warna_sepatu = $request->warna_sepatu[$index] ?? null;
+            $detailPesanan->size_baju = $request->size_baju[$index] ?? null;
+            $detailPesanan->warna_baju = $request->warna_baju[$index] ?? null;
+            $detailPesanan->kode = $silogin;
+            $simpanData = $detailPesanan->save();
+        }
+
+        if ($simpanData == 1) {
+            foreach ($request->produk_id as $x) {
+                CheckOut::where('produk_id', $x)->delete();
+            }
+        }
 
         if ($request->metode_pembayaran == 'transfer') {
             return redirect('invoce');
@@ -123,5 +255,11 @@ class ShopController extends Controller
     public function index_thanks()
     {
         return view('user.thanks');
+    }
+
+    public function cart_delete(Cart $cart)
+    {
+        $cart->delete();
+        return back();
     }
 }

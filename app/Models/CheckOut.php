@@ -12,6 +12,8 @@ class CheckOut extends Model
     protected $KeyType = 'string';
     public $incrementing = false;
 
+    
+
     public static function boot()
     {
         parent::boot();
