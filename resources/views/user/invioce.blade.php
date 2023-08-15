@@ -9,44 +9,53 @@
                     <table class="table site-block-order-table mb-5">
                         <thead>
                             {{-- <th>Product</th> --}}
-                            <th>Harga</th>
+                            {{-- <th>Harga</th> --}}
                             {{-- <th>Ongkir</th> --}}
-                            <th>Total</th>
+                            {{-- <th>Total</th> --}}
+                            <th>Nama Produk</th>
+                            <th>Harga</th>
                         </thead>
                         <tbody>
-                            @foreach ($list_pesanan as $pesanan)
+                            @foreach ($products as $product)
                                 <tr>
-                                    {{-- <td></td> --}}
-                                    {{-- <td>Rp. {{ $pesanan->total }}</td> --}}
-                                    <td>Rp. {{ number_format($pesanan->total, 2, ',', '.') }}</td>
-                                    {{-- <td>Rp. {{ number_format($pesanan->ongkir, 2, ',', '.') }}</td> --}}
+                                    <td>{{ $product[0]['nama_produk'] }} </td>
+                                    <td>Rp. {{ number_format($product[0]['harga_produk'], 2, ',') }}</td>
+                                </tr>
                             @endforeach
-                            <td>Rp. {{ number_format($total, 2, ',', '.') }}</td>
-                            </tr>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    Total :
+                                </td>
+                                <td >
+                                    Rp. {{ number_format($pesanan[0]->total_harga, 2, ',') }}
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
 
                     <div class="border mb-3 p-3 rounded">
                         <label for="">Kode pembayaran</label>
-                        <h2>{{ $code }}</h2>
-                        <small>Total yang di bayarkan : Rp. {{ number_format($total, 2, ',', '.') }}</small>
+                        {{-- <h2>{{ $code }}</h2> --}}
+                        {{-- <small>Total yang di bayarkan : Rp. {{ number_format($total, 2, ',', '.') }}</small> --}}
                     </div>
 
                     <div class="border mb-3 p-3 rounded">
-                        <form action="{{ url('invoce', $id_pesanan) }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label for="c_address" class="text-black">Invoce Tf<span
-                                            class="text-danger">*</span></label>
-                                    @error('invoce')
-                                        {{ $message }}
-                                    @enderror
-                                    <input type="file" class="form-control" id="" name="invoce"
-                                        accept=".png , .jpg , .jpeg">
-                                </div>
+                        {{-- <form action="{{ url('invoce', $id_pesanan) }}" method="post" enctype="multipart/form-data"> --}}
+                        @csrf
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label for="c_address" class="text-black">Invoce Tf<span
+                                        class="text-danger">*</span></label>
+                                @error('invoce')
+                                    {{ $message }}
+                                @enderror
+                                <input type="file" class="form-control" id="" name="invoce"
+                                    accept=".png , .jpg , .jpeg">
                             </div>
-                            <button class="btn btn-primary btn-lg btn-block">Upload</button>
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block">Upload</button>
                         </form>
                     </div>
 

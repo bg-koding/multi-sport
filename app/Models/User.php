@@ -18,8 +18,12 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class, 'user_id');
     }
 
-    public function pesanan()
+    public function CheckOut()
     {
+        return $this->hasMany(CheckOut::class, 'user_id');
+    }
+
+    public function Pesanan(){
         return $this->hasMany(Pesanan::class, 'user_id');
     }
 }

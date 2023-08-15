@@ -29,9 +29,8 @@ class Produk extends Model
         return $this->hasMany(Cart::class, 'produk_id');
     }
 
-    public function pesanan()
+    public function CheckOut()
     {
-        return $this->hasMany(Pesanan::class,'produk_id');
+        return $this->hasMany(CheckOut::class, 'produk_id');
     }
-
 }
