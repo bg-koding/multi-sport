@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class CheckOut extends Model
 {
-    protected $table = 'checkOut';
+    protected $table = 'checkout';
     protected $KeyType = 'string';
     public $incrementing = false;
 
