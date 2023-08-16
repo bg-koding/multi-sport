@@ -127,15 +127,12 @@
                                             class="nav-link text-left">About</a></li> --}}
                                     <li class=""><a href="{{ url('shop') }}"
                                             class="nav-link text-left">Shop</a></li>
-                                    <li class=""><a href="{{ url('cart') }}" class="nav-link text-left">
-                                            @if (!Auth::check())
-                                                <i class="fa-solid fa-bag-shopping"></i> Cart
-                                            @else
+                                    @if (Auth::check())
+                                        <li class=""><a href="{{ url('cart') }}" class="nav-link text-left">
                                                 {{ auth()->user()->cart->count() }} <i
                                                     class="fa-solid fa-bag-shopping"></i>
-                                                Cart
-                                            @endif
-                                        </a></li>
+                                                Cart </a></li>
+                                    @endif
                                     <li class="">
                                         @if (!Auth::check())
                                             <a href="{{ url('login') }}" class="nav-link text-left">
@@ -144,7 +141,7 @@
                                                 login
                                             </a>
                                         @else
-                                            <a href="{{ url('logout') }}" class="nav-link text-left">
+                                            <a href="{{ url('user-profile') }}" class="nav-link text-left">
                                                 <i class="fa fa-user">
                                                 </i>
                                                 {{ auth()->user()->username }}

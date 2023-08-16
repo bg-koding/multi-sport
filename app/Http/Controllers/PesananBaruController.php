@@ -20,6 +20,27 @@ class PesananBaruController extends Controller
         $kode = $pesanan->kode_produk;
         $data['list_pesan'] = DetailPesanan::where('kode', $kode)->get();
         $data['pesanan'] = $pesanan;
+
+        $kode = $pesanan->kode_produk;
+
+        $cart = DetailPesanan::where('kode', $kode)->get();
+
+
+        $test = []; // Simpan harga produk di sini
+        $q = [];    // Simpan total produk di sini
+
+        foreach ($cart as $c) {
+            $test[] = $c->produk->harga_produk;
+            $q[] = $c->total;
+        }
+
+        $result = 0; // Inisialisasi hasil perhitungan
+
+        // Lakukan perhitungan perkalian dan penjumlahan
+        for ($i = 0; $i < count($test); $i++) {
+            $result += $test[$i] * $q[$i];
+        }
+        $data['total'] = $result;
         return view('admin.pesanan-baru.show', $data);
     }
 

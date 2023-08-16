@@ -32,10 +32,17 @@
                         <span>Pesanan Selesai</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('logout') }}" class="waves-effect">
+                        <i class="fa-solid fa-user"></i><span class="badge rounded-pill bg-primary float-end"></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
 
             </ul>
         </div>
         <!-- Sidebar -->
     </div>
+
 </div>
 <!-- Left Sidebar End -->

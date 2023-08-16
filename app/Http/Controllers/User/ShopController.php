@@ -11,7 +11,7 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ShopController extends Controller
 {
@@ -131,10 +131,31 @@ class ShopController extends Controller
             $result += $test[$i] * $q[$i];
         }
 
+        $pesanan = Pesanan::where('user_id', $isLogin)->get();
+
+        $data['pesanan'] = $pesanan;
         $data['total'] = $result;
         $data['code'] = date('y') . Str::random(20);
 
         return view('user.invioce', $data);
+    }
+
+
+    public function store_invoce(Request $request, Pesanan $pesanan)
+    {
+        $request->validate([
+            'invoce' => 'required'
+        ]);
+
+
+        $folder = 'invoce';
+        $extension = request()->file('invoce')->extension();
+        $name = Str::random(10);
+        $url = request()->file('invoce')->storeAs($folder, "$name." . $extension);
+        $pesanan->file_pembayaran = $url;
+        $pesanan->save();
+
+        return redirect('thanks');
     }
 
     public function cartTest(Request $request)
@@ -246,7 +267,7 @@ class ShopController extends Controller
         }
 
         if ($request->metode_pembayaran == 'transfer') {
-            return redirect('invoce');
+            return redirect('invoce-pembayaran');
         } else {
             return redirect('thanks');
         }

@@ -41,20 +41,21 @@
                     </div>
 
                     <div class="border mb-3 p-3 rounded">
-                        {{-- <form action="{{ url('invoce', $id_pesanan) }}" method="post" enctype="multipart/form-data"> --}}
-                        @csrf
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label for="c_address" class="text-black">Invoce Tf<span
-                                        class="text-danger">*</span></label>
-                                @error('invoce')
-                                    {{ $message }}
-                                @enderror
-                                <input type="file" class="form-control" id="" name="invoce"
-                                    accept=".png , .jpg , .jpeg">
+                        <form action="{{ url('invoce/update', $pesanan[0]->id) }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_address" class="text-black">Invoce Tf<span
+                                            class="text-danger">*</span></label>
+                                    @error('invoce')
+                                        {{ $message }}
+                                    @enderror
+                                    <input type="file" class="form-control" id="" name="invoce"
+                                        accept=".png , .jpg , .jpeg">
+                                </div>
                             </div>
-                        </div>
-                        <button class="btn btn-primary btn-lg btn-block">Upload</button>
+                            <button class="btn btn-primary btn-lg btn-block">Upload</button>
                         </form>
                     </div>
 

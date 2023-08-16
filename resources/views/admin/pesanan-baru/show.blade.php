@@ -43,18 +43,14 @@
                                 <td>{{ $pesanan->status }}</td>
                             </tr>
                             <tr>
-                                <td>total harga</td>
-                                <td>Rp. {{ number_format($pesanan->total_harga, 2, ',', '.') }}</td>
-                            </tr>
-                            <tr>
                                 <td>metode pembayaran</td>
                                 <td>{{ $pesanan->metode_pembayaran }}</td>
                             </tr>
 
-                            @if ($pesanan->invoce)
+                            @if ($pesanan->file_pembayaran)
                                 <tr>
                                     <td>invoce</td>
-                                    <td><a href="{{ url($pesanan->invoce) }}" target="_blank" class="btn btn-sm btn-dark"><i
+                                    <td><a href="{{ url($pesanan->file_pembayaran) }}" target="_blank" class="btn btn-sm btn-dark"><i
                                                 class="fa fa-download"></i>
                                             download</a></td>
                                 </tr>
@@ -80,7 +76,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                {{-- <th>Foto</th> --}}
+                                <th>Foto</th>
                                 <th>Nama</th>
                                 <th>Qty</th>
                             </tr>
@@ -89,16 +85,23 @@
                             @foreach ($list_pesan as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    {{-- <td>
+                                    <td>
                                         <img width="100px"
-                                            src="{{ url('gambar', json_decode($product[0]->gambar_produk)[0]) }}"
+                                            src="{{ url('gambar', json_decode($product->produk->gambar_produk)[0]) }}"
                                             class="img-fluid" alt="" srcset="">
-                                    </td> --}}
+                                    </td>
                                     <td>{{ $product->produk->nama_produk }}</td>
                                     <td>{{ $product->total }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">
+                                    Total :  <td>Rp. {{ number_format($total, 2, ',', '.') }}</td>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

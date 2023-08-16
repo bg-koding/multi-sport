@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailPesanan;
+use App\Models\Pesanan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 
@@ -34,5 +36,40 @@ class HomeController extends Controller
             'size_sepatu' => json_decode($produk->size_sepatu),
             'warna_sepatu' => json_decode($produk->warna_sepatu),
         ]);
+    }
+
+    public function profile()
+    {
+        return view('user.profile', [
+            'user' => auth()->user(),
+            'pesanan' => Pesanan::where('user_id', auth()->user()->id)->get()
+        ]);
+    }
+
+
+    public function detailProfile(Pesanan $pesanan)
+    {
+        $kode = $pesanan->kode_produk;
+        $data['list_pesanan'] = DetailPesanan::where('kode', $kode)->get();
+
+        $cart = DetailPesanan::where('user_id', auth()->user()->id)->where('kode', $kode)->get();
+
+        $test = []; // Simpan harga produk di sini
+        $q = [];    // Simpan total produk di sini
+
+        foreach ($cart as $c) {
+            $test[] = $c->produk->harga_produk;
+            $q[] = $c->total;
+        }
+
+        $result = 0; // Inisialisasi hasil perhitungan
+
+        // Lakukan perhitungan perkalian dan penjumlahan
+        for ($i = 0; $i < count($test); $i++) {
+            $result += $test[$i] * $q[$i];
+        }
+        $data['total'] = $result;
+
+        return view('user.detail-profile', $data);
     }
 }
