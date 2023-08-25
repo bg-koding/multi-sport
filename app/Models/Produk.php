@@ -19,11 +19,6 @@ class Produk extends Model
         });
     }
 
-    // public function setFilenamesAttribute($value)
-    // {
-    //     $this->attributes['filenames'] = json_encode($value);
-    // }
-
     public function cart()
     {
         return $this->hasMany(Cart::class, 'produk_id');

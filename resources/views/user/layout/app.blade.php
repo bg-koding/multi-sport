@@ -133,6 +133,15 @@
                                                     class="fa-solid fa-bag-shopping"></i>
                                                 Cart </a></li>
                                     @endif
+                                    @if (!Auth::check())
+                                        <li>
+                                            <a href="{{ url('register') }}" class="nav-link text-left">
+                                                <i class="fa fa-user">
+                                                </i>
+                                                register
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li class="">
                                         @if (!Auth::check())
                                             <a href="{{ url('login') }}" class="nav-link text-left">

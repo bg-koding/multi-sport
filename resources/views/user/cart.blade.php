@@ -33,6 +33,13 @@
                                             <h2 class="h5 cart-product-title text-black">
                                                 {{ $cart->produk[0]->nama_produk }}
                                             </h2>
+                                            {{ $cart->size_bola  }}
+                                            {{ $cart->warna_bola }}
+                                            {{ $cart->tipe_bola }}
+                                            {{ $cart->size_sepatu }}
+                                            {{ $cart->warna_sepatu }}
+                                            {{ $cart->size_baju }}
+                                            {{ $cart->warna_baju }}
                                         </td>
                                         <td>
                                             <h2 class="h5 cart-product-title text-black">
