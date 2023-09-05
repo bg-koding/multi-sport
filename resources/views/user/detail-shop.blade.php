@@ -10,11 +10,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="owl-carousel hero-slide owl-style">
-                        @foreach ($gambar as $produks)
-                            <img src="{{ url('gambar', $produks) }}" alt="Image" class="img-fluid">
-                        @endforeach
-                    </div>
+                    {{-- @foreach ($gambar as $produks) --}}
+                        {{-- <img src="{{ url('gambar', $produks) }}" alt="Image" class="img-fluid"> --}}
+                        <img src="{{ url('gambar', $gambar[0]) }}" alt="Image" class="img-fluid" id="gambar-sepatu">
+                    {{-- @endforeach --}}
                 </div>
                 <div class="col-lg-5 ml-auto">
                     <h2 class="text-primary">{{ $produk->nama_produk }}</h2>
@@ -103,9 +102,8 @@
                                         Warna Sepatu :
                                         @foreach ($warna_sepatu as $index => $sepatu)
                                             <div class="form-check mx-2">
-                                                <input class="form-check-input" type="radio" name="warna_sepatu"
-                                                    id="warna-sepatu-{{ $index }}" value="{{ $sepatu }}">
-                                                <label class="form-check-label" for="warna-sepatu-{{ $index }}">
+                                                <input class="form-check-input wr-sepatu" type="radio" name="warna_sepatu" id="warna-{{ $index }}" value="{{ $sepatu }}" data-id="{{ $index }}">
+                                                <label class="form-check-label" for="warna-{{ $index }}">
                                                     {{ $sepatu }}
                                                 </label>
                                             </div>
@@ -184,4 +182,22 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ url('frontend/wines') }}/js/jquery-3.3.1.min.js"></script>
+    <script src="{{ url('frontend/wines') }}/js/jquery-migrate-3.0.1.min.js"></script>
+    <script>
+         $(document).ready(function() {
+        $('.wr-sepatu').click(function() {
+            var id = $(this).data('id');
+            var warnaSepatu = $(this).val();
+            
+           
+            var gambarPath = "{{ url('gambar') }}/" + warnaSepatu + '.jpg';
+            $('#gambar-sepatu').attr('src', gambarPath);
+            
+            // Lakukan sesuatu dengan ID dan warna sepatu yang telah diperoleh
+        });
+    });
+
+    </script>
 @endsection

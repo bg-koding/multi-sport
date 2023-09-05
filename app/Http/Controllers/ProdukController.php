@@ -36,15 +36,7 @@ class ProdukController extends Controller
         $produk->stok_produk = $request->stok_produk;
         $produk->kategori_produk = $request->kategori_produk;
         $produk->deskripsi_produk = $request->deskripsi_produk;
-        $files = [];
-        if ($request->hasFile('gambar_produk')) {
-            foreach ($request->file('gambar_produk') as $file) {
-                $name = time() . rand(1, 100) . '.' . $file->extension();
-                $file->storeAs('gambar', $name);
-                $files[] = $name;
-            }
-        }
-        $produk->gambar_produk = json_encode($files);
+        
 
         // Bola
 
@@ -131,6 +123,18 @@ class ProdukController extends Controller
                 return $value !== null;
             });
             $produk->warna_sepatu = json_encode($warna_sepatu);
+            
+            $files = [];
+            if ($request->hasFile('gambar_produk')) {
+                $uploadedFiles = $request->file('gambar_produk');
+                foreach ($uploadedFiles as $key => $file) {
+                    $name = $warna_sepatu[$key]. '.' . $file->extension(); // Use color as the image name
+                    $file->storeAs('gambar', $name);
+                    $files[] = $name;
+                }
+            }
+            $produk->gambar_produk = json_encode($files);
+            
         }
 
         $produk->save();

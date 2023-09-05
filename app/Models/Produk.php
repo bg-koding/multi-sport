@@ -34,4 +34,10 @@ class Produk extends Model
     {
         return $this->hasMany(DetailPesanan::class, 'produk_id');
     }
+
+    public function Galeri()
+    {
+        return $this->hasMany(Galeri::class, 'produk_id');
+    }
+
 }

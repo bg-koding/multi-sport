@@ -24,21 +24,31 @@
                             </thead>
                             <tbody>
                                 @foreach ($list_cart as $cart)
+                                    {{ $cart->warna_sepatu }}
                                     <tr>
                                         <td class="product-thumbnail">
-                                            <img src="{{ url('gambar', json_decode($cart->produk[0]->gambar_produk)[0]) }}"
-                                                alt="Image" class="img-fluid">
+                                            @if ($cart->warna_sepatu != null)
+                                            <img src="{{ url('gambar') }}/{{ $cart->warna_sepatu }}.jpg"
+                                            alt="Image" class="img-fluid">
+                                            @endif
+                                            
                                         </td>
                                         <td class="product-name">
                                             <h2 class="h5 cart-product-title text-black">
                                                 {{ $cart->produk[0]->nama_produk }}
                                             </h2>
                                             {{ $cart->size_bola  }}
+                                            <hr>
                                             {{ $cart->warna_bola }}
+                                            <hr>
                                             {{ $cart->tipe_bola }}
+                                            <hr>
                                             {{ $cart->size_sepatu }}
+                                            <hr>
                                             {{ $cart->warna_sepatu }}
+                                            <hr>
                                             {{ $cart->size_baju }}
+                                            <hr>
                                             {{ $cart->warna_baju }}
                                         </td>
                                         <td>

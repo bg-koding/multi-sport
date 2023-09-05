@@ -9,6 +9,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ShopController;
 
+
+
 // Auth controller
 Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'index');
